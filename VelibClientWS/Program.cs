@@ -17,7 +17,7 @@ namespace VelibClientWS
                 ServiceReference3.StationServiceClient objClient = new ServiceReference3.StationServiceClient(iCntxt);
                 objClient.SubscribeStationEvent();
                 objClient.SubscribeStationFinishedEvent();
-                objClient.getInfos(10, "TOULOUSE", "FEUGA");
+                objClient.getInfos(5000, "TOULOUSE", "FEUGA");
 
             Console.WriteLine("Press any key to close ...");
             Console.ReadKey();

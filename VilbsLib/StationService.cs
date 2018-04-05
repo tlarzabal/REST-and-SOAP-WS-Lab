@@ -7,6 +7,7 @@ using System.ServiceModel;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.IO;
+using System.Threading;
 
 namespace VilbsLib
 {
@@ -21,11 +22,31 @@ namespace VilbsLib
 
         public void getInfos(int time,string city ,string station)
         {
-            string result = getAvailableBikes(city, station);
-            m_Event1(time,city, station, result);
-            m_Event2();
+            string[] param = new string[] { time.ToString(), city, station };
+
+            Thread updater = new Thread(new ParameterizedThreadStart(Update));
+            updater.Start(param);
 
         }
+
+
+        public void Update(object param)
+        {
+            string[] mParam = (string[])param;
+            int time = Int32.Parse(mParam[0]);
+            string city = mParam[1];
+            string station = mParam[2];
+
+            while (true)
+            {
+                string result = getAvailableBikes(city, station);
+                m_Event1(time, city, station, result);
+                m_Event2();
+                Thread.Sleep(time);
+            }
+        }
+
+
 
         public void SubscribeStationEvent()
         {
